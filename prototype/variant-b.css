@@ -1,0 +1,60 @@
+/* PROTOTYPE Variant B: Link-in-bio feed (light, Instagram-like, single column). Throwaway. */
+body.vB { background: #fafafa; color: #111; }
+.b-wrap { max-width: 480px; margin: 0 auto; background: #fff; min-height: 100vh; padding-bottom: 140px; border-inline: 1px solid #eee; }
+
+.b-profile { display: flex; align-items: center; gap: 24px; padding: 20px 16px 8px; }
+.b-avatar { width: 84px; height: 84px; border-radius: 50%; padding: 3px; background: conic-gradient(#feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5, #feda75); flex: none; }
+.b-avatar span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: #111; color: #ffb703; border: 3px solid #fff; font: 1.6rem "Bebas Neue", sans-serif; }
+.b-stats { display: flex; flex: 1; justify-content: space-around; text-align: center; }
+.b-stats b { display: block; font-size: 1.15rem; }
+.b-stats span { font-size: .8rem; color: #555; }
+
+.b-bio { padding: 0 16px 12px; font-size: .92rem; }
+.b-handle { display: block; color: #777; font-size: .85rem; }
+.b-bio p { margin: 6px 0 12px; line-height: 1.45; }
+.b-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.b-btn { display: block; text-align: center; padding: 9px; border-radius: 8px; border: 0; background: #efefef; color: #111; font-weight: 600; font-size: .9rem; text-decoration: none; cursor: pointer; }
+.b-btn.primary { background: #0095f6; color: #fff; }
+
+.b-stories { display: flex; gap: 14px; overflow-x: auto; padding: 12px 16px; border-bottom: 1px solid #efefef; scrollbar-width: none; }
+.b-stories button { border: 0; background: none; display: grid; justify-items: center; gap: 4px; font-size: .75rem; color: #222; cursor: pointer; flex: none; }
+.b-ring { width: 64px; height: 64px; border-radius: 50%; padding: 2px; background: #dbdbdb; display: block; }
+.b-ring span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: #fff; border: 2px solid #fff; font-size: 1.6rem; }
+.b-stories button.on .b-ring { background: conic-gradient(#feda75, #fa7e1e, #d62976, #962fbf, #feda75); }
+.b-stories button.on { font-weight: 700; }
+
+.b-search { position: sticky; top: 0; z-index: 5; background: #fff; padding: 10px 16px; border-bottom: 1px solid #efefef; }
+.b-search input { width: 100%; padding: 9px 12px; border-radius: 10px; border: 0; background: #efefef; font: inherit; }
+
+.b-post { border-bottom: 1px solid #efefef; padding-bottom: 12px; }
+.b-post-head { display: flex; gap: 8px; align-items: center; padding: 10px 16px; font-size: .9rem; }
+.b-mini { width: 30px; height: 30px; border-radius: 50%; background: #111; color: #ffb703; display: grid; place-items: center; font: .8rem "Bebas Neue", sans-serif; }
+.b-ago { color: #888; }
+.b-post-media { aspect-ratio: 1; display: grid; place-items: center; background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--c2) 45%, #fff), color-mix(in srgb, var(--c1) 85%, #000)); }
+.b-post-art { width: 56%; transform: rotate(-3deg); filter: drop-shadow(0 18px 24px rgba(0,0,0,.45)); }
+.b-post-actions { display: flex; align-items: center; gap: 4px; padding: 6px 10px 0; }
+.b-post-actions button { border: 0; background: none; font-size: 1.45rem; cursor: pointer; padding: 4px 6px; }
+.b-price { margin-left: auto; font-weight: 800; font-size: 1.15rem; padding-right: 6px; }
+.b-caption { padding: 2px 16px; font-size: .92rem; line-height: 1.45; }
+.b-tags { color: #00376b; font-size: .85rem; }
+.b-dm-link { border: 0; background: none; color: #0095f6; font-weight: 600; padding: 6px 0 0; cursor: pointer; }
+.b-empty { padding: 40px 16px; text-align: center; color: #777; }
+
+.b-sell { margin: 24px 16px; padding: 18px; border-radius: 14px; background: linear-gradient(135deg, #fff4e0, #ffe9f2); }
+.b-sell h3 { margin: 0 0 4px; }
+.b-sell p { margin: 0 0 12px; font-size: .9rem; color: #444; }
+.b-sell label { display: grid; gap: 4px; font-weight: 600; font-size: .85rem; margin-bottom: 10px; }
+.b-sell textarea, .b-sell input { font: inherit; font-weight: 400; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+.b-foot { text-align: center; color: #999; font-size: .8rem; }
+
+.b-tray { position: fixed; left: 50%; bottom: 0; transform: translate(-50%, 110%); width: min(480px, 100%); z-index: 20; background: #fff; border-radius: 16px 16px 0 0; box-shadow: 0 -8px 30px rgba(0,0,0,.18); transition: transform .25s; }
+.b-tray.show { transform: translate(-50%, calc(100% - 52px)); }
+body.vB .proto-bar { bottom: 64px; } /* keep the prototype switcher clear of the trade tray */
+.b-tray.show.open { transform: translate(-50%, 0); }
+.b-tray-bar { width: 100%; border: 0; background: #111; color: #fff; padding: 15px 16px; border-radius: 16px 16px 0 0; font-weight: 600; text-align: left; cursor: pointer; display: flex; }
+.b-tray-bar span { margin-left: auto; }
+.b-tray-body { padding: 14px 16px 20px; display: grid; gap: 10px; }
+.b-tray-cards { display: flex; gap: 8px; overflow-x: auto; }
+.b-tray-card { position: relative; width: 64px; flex: none; }
+.b-tray-card button { position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; border: 0; background: #111; color: #fff; font-size: .7rem; cursor: pointer; }
+.b-tray-body textarea { font: inherit; padding: 10px; border: 1px solid #ddd; border-radius: 10px; }

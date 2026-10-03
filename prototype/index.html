@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- PROTOTYPE: three layout variants of the card shop page, switchable via ?variant=A|B|C. Throwaway. -->
+  <title>PROTOTYPE · Card Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div id="app"></div>
+
+  <div class="proto-bar" id="proto-bar" hidden>
+    <button id="proto-prev" aria-label="Previous variant">←</button>
+    <span id="proto-label"></span>
+    <button id="proto-next" aria-label="Next variant">→</button>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    const VARIANTS = { A: "Showroom", B: "Link-in-bio feed", C: "Trade desk" };
+    const KEYS = Object.keys(VARIANTS);
+    const params = new URLSearchParams(location.search);
+    const current = KEYS.includes(params.get("variant")) ? params.get("variant") : "A";
+
+    // Load this variant's stylesheet + script
+    document.body.classList.add("v" + current);
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = `variant-${current.toLowerCase()}.css`;
+    document.head.appendChild(css);
+    const js = document.createElement("script");
+    js.src = `variant-${current.toLowerCase()}.js`;
+    document.body.appendChild(js);
+
+    // Floating switcher: only shown on local preview, never on a deployed site
+    const isLocal = ["localhost", "127.0.0.1", ""].includes(location.hostname);
+    if (isLocal) {
+      const bar = document.getElementById("proto-bar");
+      bar.hidden = false;
+      document.getElementById("proto-label").textContent = `${current} (${VARIANTS[current]})`;
+      const go = (step) => {
+        const i = (KEYS.indexOf(current) + step + KEYS.length) % KEYS.length;
+        params.set("variant", KEYS[i]);
+        location.search = params.toString();
+      };
+      document.getElementById("proto-prev").onclick = () => go(-1);
+      document.getElementById("proto-next").onclick = () => go(1);
+      document.addEventListener("keydown", (e) => {
+        const el = document.activeElement;
+        if (el && (el.matches("input, textarea, select, [contenteditable]"))) return;
+        if (e.key === "ArrowLeft") go(-1);
+        if (e.key === "ArrowRight") go(1);
+      });
+    }
+  </script>
+</body>
+</html>

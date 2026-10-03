@@ -1,0 +1,47 @@
+/* PROTOTYPE: shared styles (card art, toast, switcher). Throwaway. */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif; }
+button { font: inherit; }
+
+/* ---------- Card art (drawn with CSS) ---------- */
+.art { position: relative; aspect-ratio: 5 / 7; width: 100%; border-radius: 8px; }
+.art.is-graded { padding: 26px 7px 7px; background: linear-gradient(180deg, #f4f6f8, #d9dee4); border-radius: 10px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); aspect-ratio: 5 / 8.2; }
+.art-slab { position: absolute; top: 5px; left: 7px; right: 7px; height: 17px; border-radius: 3px; background: #c8102e; color: #fff; font-size: 10px; display: flex; justify-content: space-between; align-items: center; padding: 0 6px; letter-spacing: .04em; }
+.art-slab span { font-weight: 700; }
+.art-face {
+  position: relative; height: 100%; border-radius: 6px; overflow: hidden; color: #fff;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.35), transparent 45%),
+    linear-gradient(135deg, transparent 40%, rgba(255,255,255,.18) 50%, transparent 60%),
+    linear-gradient(160deg, var(--c1) 0%, var(--c1) 55%, var(--c2) 100%);
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,.75), inset 0 0 0 5px var(--c2);
+  display: flex; flex-direction: column; padding: 9%;
+}
+.art-top { display: flex; justify-content: space-between; font-size: .6em; font-weight: 600; opacity: .9; text-transform: uppercase; letter-spacing: .05em; }
+.art-silhouette { flex: 1; display: grid; place-items: center; font-size: 3.2em; filter: drop-shadow(0 4px 8px rgba(0,0,0,.35)); }
+.art-rc { position: absolute; right: 9%; top: 22%; background: #fff; color: #c8102e; font-weight: 800; font-size: .65em; padding: 2px 5px; border-radius: 3px; }
+.art-name { font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.35em; line-height: 1; letter-spacing: .02em; text-shadow: 0 2px 6px rgba(0,0,0,.4); }
+.art-team { font-size: .62em; opacity: .9; margin-top: 2px; }
+.art-sm { font-size: 9px; }
+.art-md { font-size: 13px; }
+.art-lg { font-size: 20px; }
+
+/* ---------- Toast ---------- */
+.proto-toast {
+  position: fixed; left: 50%; bottom: 80px; transform: translate(-50%, 20px); opacity: 0;
+  background: #111; color: #fff; padding: 12px 18px; border-radius: 10px; font-size: .9rem;
+  max-width: calc(100% - 32px); text-align: center; z-index: 1000; transition: .25s; pointer-events: none;
+}
+.proto-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- Prototype switcher (not part of the design) ---------- */
+.proto-bar {
+  position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 2000;
+  display: flex; align-items: center; gap: 4px;
+  background: #ff2bd6; color: #fff; border-radius: 999px; padding: 4px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.35); font: 600 13px/1 "Inter", sans-serif;
+}
+.proto-bar[hidden] { display: none; }
+.proto-bar span { padding: 0 10px; white-space: nowrap; }
+.proto-bar button { width: 30px; height: 30px; border-radius: 50%; border: 0; background: rgba(255,255,255,.2); color: #fff; cursor: pointer; }
+.proto-bar button:hover { background: rgba(255,255,255,.35); }
