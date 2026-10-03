@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gridiron &amp; Hardwood · Sports Cards</title>
+  <meta name="description" content="Football and basketball cards. Browse graded and raw cards, DM to buy, or build a trade.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏈</text></svg>">
+</head>
+<body>
+
+  <header class="header">
+    <a class="brand" href="#top">
+      <span class="logo js-initials">G&amp;H</span>
+      <span><b class="js-shop">Gridiron &amp; Hardwood</b><small class="js-tagline"></small></span>
+    </a>
+    <input class="search" id="search" type="search" placeholder="Search player, team, set…" aria-label="Search cards">
+    <button class="pill-btn filters-btn" id="open-filters" aria-controls="filters">⚙️ Filters <span class="badge" id="filter-count" hidden></span></button>
+    <button class="pill-btn" id="open-binder" aria-controls="binder">🗂️ Trade binder <span class="badge" id="binder-count">0</span></button>
+  </header>
+
+  <main id="top">
+    <section class="intro">
+      <div>
+        <p class="eyebrow js-shop">Gridiron &amp; Hardwood</p>
+        <h1>Buy · Sell · <span>Trade</span></h1>
+        <p>Football &amp; basketball cards, graded and raw. Every card here is in hand and ready to ship.</p>
+      </div>
+      <ol class="steps">
+        <li><b>Browse</b><span>Filter by player, grade or price</span></li>
+        <li><b>DM to buy or trade</b><span>One tap sends me the details</span></li>
+        <li><b>Ships tracked</b><span>Sleeved, top-loaded, bubble mailer</span></li>
+      </ol>
+    </section>
+
+    <div class="shop">
+      <aside class="filters" id="filters" aria-label="Filters">
+        <div class="filters-head">
+          <h2>Filters</h2>
+          <button class="link-btn" id="clear-filters">Clear all</button>
+          <button class="close-btn" id="close-filters" aria-label="Close filters">✕</button>
+        </div>
+
+        <h3>Sport</h3>
+        <div class="seg" data-key="sport"></div>
+        <h3>Condition</h3>
+        <div class="seg" data-key="condition"></div>
+        <h3>Grading company</h3>
+        <div id="grader-checks"></div>
+        <h3>Extras</h3>
+        <label class="check"><input type="checkbox" id="rookies"> Rookies only</label>
+        <label class="check"><input type="checkbox" id="hide-sold"> Hide sold cards</label>
+        <h3>Max price: <span id="max-label"></span></h3>
+        <input type="range" id="max-price" min="5" step="5" aria-label="Maximum price">
+
+        <div class="info">
+          <p><b>💳 Payment</b><br><span class="js-payments"></span></p>
+          <p><b>📦 Shipping</b><br><span class="js-shipping"></span></p>
+        </div>
+        <button class="btn primary show-results" id="show-results">Show cards</button>
+      </aside>
+
+      <section class="results" aria-label="Cards">
+        <div class="toolbar">
+          <span id="result-count" aria-live="polite"></span>
+          <label class="sort">Sort
+            <select id="sort">
+              <option value="new">Newest</option>
+              <option value="low">Price: low to high</option>
+              <option value="high">Price: high to low</option>
+            </select>
+          </label>
+        </div>
+        <div class="grid" id="grid"></div>
+      </section>
+    </div>
+
+    <section class="sell" id="sell">
+      <div>
+        <h2>Sell me your collection</h2>
+        <p>Cleaning out a closet or a binder? Tell me what you've got and I'll reply with a cash or trade offer, usually within a day.</p>
+        <ul>
+          <li>✔ Singles, lots and full collections</li>
+          <li>✔ Graded or raw</li>
+          <li>✔ Fair offers, paid fast</li>
+        </ul>
+      </div>
+      <form class="form-card" id="sell-form" name="sell-collection" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="sell-collection">
+        <p hidden><label>Leave this empty <input name="bot-field"></label></p>
+        <label>Name <input type="text" name="name" required autocomplete="name"></label>
+        <label>Instagram handle or phone <input type="text" name="contact" required></label>
+        <label>What do you have?
+          <textarea name="details" rows="4" required placeholder="e.g. ~300 football cards 2018–2023, a few PSA 9s, Mahomes rookie"></textarea>
+        </label>
+        <button class="btn primary" type="submit">Send</button>
+        <p class="form-msg" id="sell-msg" hidden></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> <span class="js-shop">Gridiron &amp; Hardwood</span> · <a class="js-ig" href="#" target="_blank" rel="noopener">Instagram</a></p>
+    <p class="small">Demo site: inventory and prices are sample data. Card images are illustrations, not photos of actual cards.</p>
+  </footer>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden></div>
+
+  <aside class="drawer" id="binder" aria-label="Trade binder" aria-hidden="true">
+    <div class="drawer-head">
+      <h2>Trade binder</h2>
+      <button class="close-btn" id="close-binder" aria-label="Close trade binder">✕</button>
+    </div>
+    <div id="binder-body"></div>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
