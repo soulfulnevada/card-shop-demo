@@ -23,4 +23,4 @@ Then open http://localhost:5176/prototype/?variant=A and use the pink bar (or â†
 - The pink switcher only shows on localhost.
 
 ## Verdict
-_TBD: record which variant won (and which pieces were borrowed from the others) here._
+**Winner: A (Showroom)**, chosen by Jacob on 2026-10-02. Rebuilt properly on `main` as the real demo. B and C stay here for reference.
