@@ -11,9 +11,8 @@ A demo website for a football/basketball card seller who sells on Instagram. Pla
 - Filters slide in as a panel on phones
 
 ## Personalizing
-Everything lives at the top of `script.js`:
-- `CONFIG`: shop name, initials, Instagram handle (empty = demo mode), payment and shipping info
-- `CARDS`: the inventory. Add, remove or mark `sold: true`.
+- `CONFIG` at the top of `script.js`: shop name, initials, Instagram handle (empty = demo mode), payment and shipping info, and `inventoryUrl`.
+- **Inventory comes from a Google Sheet** published as CSV, so the seller updates cards from his phone. Until it's connected, the site reads `inventory-sample.csv`. Setup steps for the seller are in [SHEET-SETUP.md](SHEET-SETUP.md).
 
 ## Preview locally
 ```
@@ -23,6 +22,6 @@ Then open http://localhost:5176
 
 ## Notes
 - Instagram doesn't let websites pre-fill DM text, so the buttons copy the message to the clipboard and open `ig.me/m/<handle>`.
-- Card faces are drawn with CSS. Real listings should use the seller's own photos of each card.
-- Next step for a real seller: load `CARDS` from a Google Sheet so inventory can be updated from a phone.
+- Card faces are drawn with CSS unless a row has a `photo` link (direct `https://` image or Google Drive share link). If a photo fails to load, the drawn card shows instead.
+- Sheet text is always escaped before display, so nothing typed into the sheet can run as code on the site.
 - The layout came from a prototype of three options. See the `prototype/card-shop-layouts` branch.

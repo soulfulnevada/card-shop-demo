@@ -7,56 +7,67 @@ const CONFIG = {
   instagram: "",  // Seller's handle without the @. Leave empty for demo mode.
   payments: "PayPal G&S · Venmo",
   shipping: "Penny sleeve + top loader + bubble mailer, tracked. Ships in 1–2 days.",
+
+  // Where the inventory comes from. Paste the Google Sheet's "Publish to web" CSV link here
+  // (see SHEET-SETUP.md). The sample file is used until then.
+  inventoryUrl: "inventory-sample.csv",
 };
 
-// ---------- Inventory (sample data) ----------
-// grader/grade: null = raw card. colors: [main, accent] used to draw the card.
-// added: days since listed (lower = newer). sold: true shows the card with a SOLD stamp.
-
-const CARDS = [
-  { id: 1, sport: "NFL", player: "C.J. Stroud", team: "Texans", year: 2023, set: "Panini Prizm", num: "339", rookie: true, grader: "PSA", grade: 10, price: 185, colors: ["#03202f", "#a71930"], added: 1 },
-  { id: 2, sport: "NBA", player: "Victor Wembanyama", team: "Spurs", year: 2023, set: "Panini Prizm", num: "136", rookie: true, grader: "PSA", grade: 9, price: 240, colors: ["#1b1b1b", "#c4ced4"], added: 2 },
-  { id: 3, sport: "NFL", player: "Patrick Mahomes", team: "Chiefs", year: 2017, set: "Donruss Optic", num: "177", rookie: true, grader: "BGS", grade: 9.5, price: 420, colors: ["#e31837", "#ffb81c"], added: 9, sold: true },
-  { id: 4, sport: "NBA", player: "Anthony Edwards", team: "Timberwolves", year: 2020, set: "Panini Prizm", num: "258", rookie: true, grader: null, grade: null, price: 65, colors: ["#0c2340", "#78be20"], added: 3 },
-  { id: 5, sport: "NBA", player: "Stephen Curry", team: "Warriors", year: 2022, set: "Donruss", num: "1", rookie: false, grader: null, grade: null, price: 6, colors: ["#1d428a", "#ffc72c"], added: 14 },
-  { id: 6, sport: "NFL", player: "Justin Jefferson", team: "Vikings", year: 2020, set: "Panini Mosaic", num: "211", rookie: true, grader: "PSA", grade: 9, price: 70, colors: ["#4f2683", "#ffc62f"], added: 5 },
-  { id: 7, sport: "NBA", player: "LeBron James", team: "Lakers", year: 2021, set: "Panini Select", num: "48", rookie: false, grader: "SGC", grade: 9.5, price: 55, colors: ["#552583", "#fdb927"], added: 11 },
-  { id: 8, sport: "NFL", player: "Caleb Williams", team: "Bears", year: 2024, set: "Panini Prizm", num: "301", rookie: true, grader: null, grade: null, price: 28, colors: ["#0b162a", "#c83803"], added: 4 },
-  { id: 9, sport: "NBA", player: "Luka Dončić", team: "Mavericks", year: 2018, set: "Panini Donruss", num: "177", rookie: true, grader: "PSA", grade: 9, price: 210, colors: ["#00538c", "#b8c4ca"], added: 7 },
-  { id: 10, sport: "NFL", player: "Josh Allen", team: "Bills", year: 2018, set: "Panini Prizm", num: "205", rookie: true, grader: "PSA", grade: 8, price: 160, colors: ["#00338d", "#c60c30"], added: 16, sold: true },
-  { id: 11, sport: "NBA", player: "Ja Morant", team: "Grizzlies", year: 2019, set: "Panini Prizm", num: "249", rookie: true, grader: "PSA", grade: 10, price: 310, colors: ["#12173f", "#5d76a9"], added: 6 },
-  { id: 12, sport: "NFL", player: "Lamar Jackson", team: "Ravens", year: 2022, set: "Donruss Optic", num: "9", rookie: false, grader: null, grade: null, price: 8, colors: ["#241773", "#9e7c0c"], added: 18 },
-  { id: 13, sport: "NBA", player: "Giannis Antetokounmpo", team: "Bucks", year: 2021, set: "Panini Mosaic", num: "112", rookie: false, grader: null, grade: null, price: 12, colors: ["#00471b", "#eee1c6"], added: 13 },
-  { id: 14, sport: "NFL", player: "Brock Purdy", team: "49ers", year: 2022, set: "Panini Prizm", num: "331", rookie: true, grader: "SGC", grade: 10, price: 95, colors: ["#aa0000", "#b3995d"], added: 8 },
-  { id: 15, sport: "NBA", player: "Jayson Tatum", team: "Celtics", year: 2017, set: "Panini Prizm", num: "16", rookie: true, grader: "BGS", grade: 9, price: 175, colors: ["#007a33", "#ba9653"], added: 15 },
-  { id: 16, sport: "NFL", player: "Ja'Marr Chase", team: "Bengals", year: 2021, set: "Panini Select", num: "52", rookie: true, grader: null, grade: null, price: 40, colors: ["#fb4f14", "#000000"], added: 10 },
-  { id: 17, sport: "NBA", player: "Shai Gilgeous-Alexander", team: "Thunder", year: 2023, set: "Donruss Optic", num: "88", rookie: false, grader: null, grade: null, price: 15, colors: ["#007ac1", "#ef3b24"], added: 12 },
-  { id: 18, sport: "NFL", player: "Jayden Daniels", team: "Commanders", year: 2024, set: "Donruss Optic", num: "Rated Rookie", rookie: true, grader: "PSA", grade: 9, price: 75, colors: ["#5a1414", "#ffb612"], added: 2 },
-  { id: 19, sport: "NBA", player: "Nikola Jokić", team: "Nuggets", year: 2015, set: "Panini Prizm", num: "291", rookie: true, grader: "PSA", grade: 8, price: 260, colors: ["#0e2240", "#fec524"], added: 17 },
-  { id: 20, sport: "NFL", player: "Puka Nacua", team: "Rams", year: 2023, set: "Panini Mosaic", num: "290", rookie: true, grader: null, grade: null, price: 22, colors: ["#003594", "#ffd100"], added: 6 },
-];
+// Every card comes from the inventory sheet. Columns (header names, any order):
+// player, sport, team, year, set, number, rookie, grader, grade, price, status, date_added, photo, notes, colors
+let CARDS = [];
 
 // ---------- Helpers ----------
 
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
-const money = (n) => "$" + n.toLocaleString();
-const gradeLabel = (c) => (c.grader ? `${c.grader} ${c.grade}` : "Raw");
-const cardTitle = (c) => `${c.year} ${c.set} ${c.player}${c.rookie ? " RC" : ""}`;
+const money = (n) => "$" + n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+const gradeLabel = (c) => (c.grader ? `${c.grader} ${c.grade ?? ""}`.trim() : "Raw");
+const cardTitle = (c) => `${c.year || ""} ${c.set} ${c.player}${c.rookie ? " RC" : ""}`.trim();
 const byId = (id) => CARDS.find((c) => c.id === id);
-const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+
+const SPORT_ICONS = { NFL: "🏈", NBA: "🏀", WNBA: "🏀", MLB: "⚾", NHL: "🏒" };
+const FALLBACK_COLORS = [
+  ["#1d3557", "#e63946"], ["#14213d", "#fca311"], ["#2b2d42", "#8d99ae"], ["#003049", "#f77f00"],
+  ["#283618", "#dda15e"], ["#3a0ca3", "#4cc9f0"], ["#432818", "#bb9457"], ["#0b525b", "#99e2b4"],
+];
+const HEX = /^#[0-9a-f]{3,8}$/i;
+
+// Same team always gets the same colors when the sheet doesn't specify them.
+function colorsFor(team, given) {
+  const parts = (given || "").split("/").map((s) => s.trim());
+  if (parts.length === 2 && parts.every((p) => HEX.test(p))) return parts;
+  const hash = [...(team || "x")].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
+  return FALLBACK_COLORS[hash % FALLBACK_COLORS.length];
+}
+
+// Accepts direct image links and Google Drive share links. Anything else is ignored.
+function imageUrl(raw) {
+  const s = (raw || "").trim();
+  const drive = s.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/);
+  if (drive) return `https://drive.google.com/thumbnail?id=${drive[1]}&sz=w1000`;
+  return /^https:\/\//i.test(s) ? s : "";
+}
 
 function cardArt(c, size) {
-  return `
+  const drawn = `
     <div class="art art-${size} ${c.grader ? "graded" : ""}" style="--c1:${c.colors[0]};--c2:${c.colors[1]}" aria-hidden="true">
-      ${c.grader ? `<div class="art-label"><b>${c.grader}</b><span>${c.grade}</span></div>` : ""}
+      ${c.grader ? `<div class="art-label"><b>${esc(c.grader)}</b><span>${esc(c.grade ?? "")}</span></div>` : ""}
       <div class="art-face">
-        <div class="art-top"><span>${c.set}</span><span>${c.year}</span></div>
-        <div class="art-ball">${c.sport === "NFL" ? "🏈" : "🏀"}</div>
+        <div class="art-top"><span>${esc(c.set)}</span><span>${esc(c.year || "")}</span></div>
+        <div class="art-ball">${SPORT_ICONS[c.sport] || "🃏"}</div>
         ${c.rookie ? `<div class="art-rc">RC</div>` : ""}
-        <div class="art-name">${c.player}</div>
-        <div class="art-team">${c.team} · #${c.num}</div>
+        <div class="art-name">${esc(c.player)}</div>
+        <div class="art-team">${esc(c.team)}${c.num ? ` · #${esc(c.num)}` : ""}</div>
       </div>
+    </div>`;
+  if (!c.photo) return drawn;
+  // Real photo on top of the drawn card; if the photo fails to load, the drawn card shows instead.
+  return `
+    <div class="photo-wrap art-${size}">
+      ${drawn}
+      <img class="card-photo" src="${esc(c.photo)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
     </div>`;
 }
 
@@ -79,6 +90,72 @@ async function dmSeller(message) {
   window.open(`https://ig.me/m/${CONFIG.instagram}`, "_blank", "noopener");
 }
 
+// ---------- Loading the inventory sheet ----------
+
+// Minimal CSV parser: handles quoted fields, commas and line breaks inside quotes, and "" escapes.
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = "", quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (quoted) {
+      if (ch === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (ch === '"') quoted = false;
+      else field += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ",") { row.push(field); field = ""; }
+    else if (ch === "\n" || ch === "\r") {
+      if (ch === "\r" && text[i + 1] === "\n") i++;
+      row.push(field); rows.push(row); row = []; field = "";
+    } else field += ch;
+  }
+  if (field || row.length) { row.push(field); rows.push(row); }
+  return rows.filter((r) => r.some((f) => f.trim()));
+}
+
+function rowsToCards(rows) {
+  const [header, ...body] = rows;
+  const keys = header.map((h) => h.trim().toLowerCase().replace(/\s+/g, "_"));
+  const yes = (v) => /^(y|yes|true|1|x|✓|✔)$/i.test((v || "").trim());
+  const num = (v) => { const n = parseFloat(String(v || "").replace(/[$,\s]/g, "")); return Number.isFinite(n) ? n : null; };
+
+  return body.map((cells, i) => {
+    const r = Object.fromEntries(keys.map((k, j) => [k, (cells[j] || "").trim()]));
+    const price = num(r.price);
+    if (!r.player || price === null) return null; // skip half-filled rows
+    const grader = r.grader ? r.grader.toUpperCase() : null;
+    const listed = Date.parse(r.date_added);
+    return {
+      id: i + 1,
+      player: r.player,
+      sport: (r.sport || "Other").toUpperCase(),
+      team: r.team || "",
+      year: parseInt(r.year, 10) || null,
+      set: r.set || "",
+      num: r.number || "",
+      rookie: yes(r.rookie),
+      grader,
+      grade: grader ? num(r.grade) : null,
+      price,
+      sold: /^sold$/i.test(r.status),
+      listed: Number.isFinite(listed) ? listed : 0,
+      row: i,
+      photo: imageUrl(r.photo),
+      notes: r.notes || "",
+      colors: colorsFor(r.team, r.colors),
+    };
+  }).filter(Boolean);
+}
+
+async function loadInventory() {
+  const url = CONFIG.inventoryUrl + (CONFIG.inventoryUrl.includes("?") ? "&" : "?") + "t=" + Date.now();
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const text = await res.text();
+  if (/^\s*</.test(text)) throw new Error("Got a web page instead of CSV. Is the sheet published as CSV?");
+  return rowsToCards(parseCSV(text));
+}
+
 // ---------- Apply settings ----------
 
 $$(".js-shop").forEach((el) => (el.textContent = CONFIG.shopName));
@@ -92,18 +169,32 @@ $("#year").textContent = new Date().getFullYear();
 
 // ---------- Filters ----------
 
-const PRICE_CAP = Math.ceil(Math.max(...CARDS.map((c) => c.price)) / 5) * 5;
-const SEGMENTS = { sport: ["All", "NFL", "NBA"], condition: ["All", "Graded", "Raw"] };
-const GRADERS = [...new Set(CARDS.map((c) => c.grader).filter(Boolean))].sort();
-const DEFAULTS = { q: "", sport: "All", condition: "All", graders: [], rookies: false, hideSold: false, max: PRICE_CAP, sort: "new" };
-const state = { ...DEFAULTS, graders: [], binder: [] };
+let PRICE_CAP = 0;
+let PRICE_FLOOR = 0;
+const SEGMENTS = { sport: ["All"], condition: ["All", "Graded", "Raw"] };
+let DEFAULTS = {};
+const state = { binder: [] };
 
-$$(".seg").forEach((seg) => {
-  seg.innerHTML = SEGMENTS[seg.dataset.key].map((v) => `<button type="button" data-v="${v}">${v}</button>`).join("");
-});
-$("#grader-checks").innerHTML = GRADERS.map((g) => `<label class="check"><input type="checkbox" value="${g}" data-grader> ${g}</label>`).join("");
-$("#max-price").max = PRICE_CAP;
-$("#max-price").min = Math.ceil(Math.min(...CARDS.map((c) => c.price)) / 5) * 5;
+// Built after the inventory loads, since sports, graders and prices come from the sheet.
+function setupFilters() {
+  const prices = CARDS.map((c) => c.price);
+  PRICE_CAP = Math.max(5, Math.ceil(Math.max(...prices, 0) / 5) * 5);
+  PRICE_FLOOR = Math.min(PRICE_CAP, Math.ceil(Math.min(...prices, PRICE_CAP) / 5) * 5);
+  SEGMENTS.sport = ["All", ...new Set(CARDS.map((c) => c.sport))];
+  const graders = [...new Set(CARDS.map((c) => c.grader).filter(Boolean))].sort();
+
+  DEFAULTS = { q: "", sport: "All", condition: "All", graders: [], rookies: false, hideSold: false, max: PRICE_CAP, sort: "new" };
+  Object.assign(state, { ...DEFAULTS, graders: [] });
+
+  $$(".seg").forEach((seg) => {
+    seg.innerHTML = SEGMENTS[seg.dataset.key].map((v) => `<button type="button" data-v="${esc(v)}">${esc(v)}</button>`).join("");
+  });
+  $("#grader-checks").innerHTML = graders.length
+    ? graders.map((g) => `<label class="check"><input type="checkbox" value="${esc(g)}" data-grader> ${esc(g)}</label>`).join("")
+    : `<p class="muted small">No graded cards right now.</p>`;
+  $("#max-price").max = PRICE_CAP;
+  $("#max-price").min = PRICE_FLOOR;
+}
 
 function syncControls() {
   $$(".seg").forEach((seg) =>
@@ -124,10 +215,11 @@ function activeFilterCount() {
 
 function filteredCards() {
   const q = state.q.trim().toLowerCase();
+  const newest = (a, b) => (b.listed - a.listed) || (b.row - a.row);
   const sorters = {
-    new: (a, b) => (a.sold - b.sold) || (a.added - b.added),
-    low: (a, b) => (a.sold - b.sold) || (a.price - b.price),
-    high: (a, b) => (a.sold - b.sold) || (b.price - a.price),
+    new: newest,
+    low: (a, b) => (a.price - b.price) || newest(a, b),
+    high: (a, b) => (b.price - a.price) || newest(a, b),
   };
   return CARDS.filter((c) =>
     (state.sport === "All" || c.sport === state.sport) &&
@@ -137,7 +229,7 @@ function filteredCards() {
     (!state.hideSold || !c.sold) &&
     c.price <= state.max &&
     (!q || `${c.player} ${c.team} ${c.set} ${c.year}`.toLowerCase().includes(q))
-  ).sort((a, b) => sorters[state.sort]({ ...a, sold: +!!a.sold }, { ...b, sold: +!!b.sold }));
+  ).sort((a, b) => (a.sold - b.sold) || sorters[state.sort](a, b)); // sold cards always last
 }
 
 function renderGrid() {
@@ -146,16 +238,18 @@ function renderGrid() {
   $("#result-count").textContent = `${forSale} for sale${list.length > forSale ? ` · ${list.length - forSale} sold` : ""}`;
   $("#grid").innerHTML = list.length
     ? list.map((c) => `
-      <button type="button" class="tile ${c.sold ? "sold" : ""}" data-id="${c.id}" aria-label="${esc(cardTitle(c))}, ${gradeLabel(c)}, ${c.sold ? "sold" : money(c.price)}">
+      <button type="button" class="tile ${c.sold ? "sold" : ""}" data-id="${c.id}" aria-label="${esc(cardTitle(c))}, ${esc(gradeLabel(c))}, ${c.sold ? "sold" : money(c.price)}">
         ${cardArt(c, "md")}
         ${c.sold ? `<span class="sold-stamp">Sold</span>` : ""}
         <div class="tile-info">
-          <div class="tile-name">${c.player}</div>
-          <div class="tile-meta">${c.year} ${c.set}</div>
-          <div class="tile-foot"><span class="chip">${gradeLabel(c)}</span><b>${c.sold ? "Sold" : money(c.price)}</b></div>
+          <div class="tile-name">${esc(c.player)}</div>
+          <div class="tile-meta">${esc(`${c.year || ""} ${c.set}`.trim())}</div>
+          <div class="tile-foot"><span class="chip">${esc(gradeLabel(c))}</span><b>${c.sold ? "Sold" : money(c.price)}</b></div>
         </div>
       </button>`).join("")
-    : `<p class="empty">No cards match those filters. <button type="button" class="link-btn" data-clear>Clear filters</button></p>`;
+    : CARDS.length
+      ? `<p class="empty">No cards match those filters. <button type="button" class="link-btn" data-clear>Clear filters</button></p>`
+      : `<p class="empty">No cards listed right now. Check back soon!</p>`;
 
   const n = activeFilterCount();
   $("#filter-count").hidden = n === 0;
@@ -219,9 +313,10 @@ function openModal(c) {
       <button type="button" class="close-btn" data-close aria-label="Close">✕</button>
       <div class="modal-art">${cardArt(c, "lg")}</div>
       <div class="modal-info">
-        <span class="chip">${gradeLabel(c)}</span>${c.rookie ? ` <span class="chip rc">Rookie</span>` : ""}
-        <h2 id="modal-title">${c.player}</h2>
-        <p class="muted">${c.year} ${c.set} #${c.num} · ${c.team}</p>
+        <span class="chip">${esc(gradeLabel(c))}</span>${c.rookie ? ` <span class="chip rc">Rookie</span>` : ""}
+        <h2 id="modal-title">${esc(c.player)}</h2>
+        <p class="muted">${esc([`${c.year || ""} ${c.set}`.trim() + (c.num ? ` #${c.num}` : ""), c.team].filter(Boolean).join(" · "))}</p>
+        ${c.notes ? `<p class="notes">${esc(c.notes)}</p>` : ""}
         ${c.sold
           ? `<p class="price is-sold">Sold</p>
              <p class="muted">This one's gone, but I may be able to find another.</p>
@@ -229,7 +324,7 @@ function openModal(c) {
           : `<p class="price">${money(c.price)}</p>
              <button type="button" class="btn primary" data-dm="${c.id}">💬 DM to buy</button>
              <button type="button" class="btn" data-binder="${c.id}" ${inBinder ? "disabled" : ""}>${inBinder ? "✓ In trade binder" : "🗂️ Add to trade binder"}</button>
-             <p class="muted small">${CONFIG.shipping}</p>`}
+             <p class="muted small">${esc(CONFIG.shipping)}</p>`}
       </div>
     </div>`;
   $("#modal").hidden = false;
@@ -251,7 +346,10 @@ $("#grid").addEventListener("click", (e) => {
 $("#modal").addEventListener("click", (e) => {
   const t = e.target;
   if (t === $("#modal") || t.closest("[data-close]")) return closeModal();
-  if (t.dataset.dm) dmSeller(`Hi! Is the ${cardTitle(byId(+t.dataset.dm))} (${gradeLabel(byId(+t.dataset.dm))}, ${money(byId(+t.dataset.dm).price)}) still available?`);
+  if (t.dataset.dm) {
+    const c = byId(+t.dataset.dm);
+    dmSeller(`Hi! Is the ${cardTitle(c)} (${gradeLabel(c)}, ${money(c.price)}) still available?`);
+  }
   if (t.dataset.dmFind) dmSeller(`Hi! I saw the ${cardTitle(byId(+t.dataset.dmFind))} sold. Could you find me another one?`);
   if (t.dataset.binder) {
     addToBinder(+t.dataset.binder);
@@ -283,7 +381,7 @@ function renderBinder() {
   $("#binder-body").innerHTML = cards.length
     ? `<ul class="binder-list">${cards.map((c) => `
         <li>${cardArt(c, "sm")}
-          <div><b>${c.player}</b><br><small class="muted">${c.year} ${c.set} · ${gradeLabel(c)}</small><br>${money(c.price)}</div>
+          <div><b>${esc(c.player)}</b><br><small class="muted">${esc(`${c.year || ""} ${c.set}`.trim())} · ${esc(gradeLabel(c))}</small><br>${money(c.price)}</div>
           <button type="button" data-remove="${c.id}" aria-label="Remove ${esc(c.player)}">✕</button></li>`).join("")}</ul>
       <p class="binder-total">Total value: <b>${money(total)}</b></p>
       <label class="offer">What are you offering?
@@ -341,5 +439,15 @@ $("#sell-form").addEventListener("submit", async (e) => {
 
 // ---------- Start ----------
 
-update();
 renderBinder();
+$("#grid").innerHTML = `<p class="empty">Loading cards…</p>`;
+loadInventory()
+  .then((cards) => { CARDS = cards; })
+  .catch((err) => {
+    console.error("Inventory failed to load:", err);
+    $("#grid").innerHTML = `<p class="empty">Couldn't load the card list right now. Please try again in a minute, or DM me on Instagram.</p>`;
+  })
+  .finally(() => {
+    setupFilters();
+    if (CARDS.length || !$("#grid").textContent.includes("Couldn't")) update();
+  });
